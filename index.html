@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      href="https://anders0825.github.io/favicon_host/favicon_w.png"
+      type="image/favicon"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Template</title>
+  </head>
+  <body>
+    <section id="add-book-cont">
+      <h1>Book Register:</h1>
+      <form id="book-form">
+        <section id="book-cont">
+          <section id="title-cont" class="input-cont">
+            <p>Title:</p>
+            <input
+              type="text"
+              name="title-input"
+              id="title-input"
+              class="input-field"
+              placeholder="Title..."
+            />
+          </section>
+          <section id="date-cont" class="input-cont">
+            <p>Author:</p>
+            <input
+              type="text"
+              name="author-input"
+              id="author-input"
+              class="input-field"
+              placeholder="Author..."
+            />
+          </section>
+          <div class="row-wrap">
+            <section id="score-cont" class="input-cont">
+              <p>Score:</p>
+              <div id="score-div">
+                <input
+                  type="number"
+                  name="score-input"
+                  id="score-input"
+                  class="input-field"
+                  min="0"
+                  max="10"
+                  placeholder="00"
+                />
+                <p>/</p>
+                <p>10</p>
+              </div>
+            </section>
+            <section id="genre-cont" class="input-cont">
+              <p>Genre:</p>
+              <select name="genre-input" id="genre-input" class="input-field">
+                <option value="other" selected>Other</option>
+                <option value="action">Action</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="romance">Romance</option>
+              </select>
+            </section>
+          </div>
+          <input type="submit" value="Add Book" id="submit-input" />
+        </section>
+      </form>
+    </section>
+    <section id="register-cont">
+      <h2>My Books:</h2>
+      <section id="menu-cont">
+        <label for="sort-input">Sort by:</label>
+        <select name="sort-input" id="sort-input" class="select-cont">
+          <option value="time-desc" selected>Oldest</option>
+          <option value="time-asc">Latest</option>
+          <option value="score">Score</option>
+        </select>
+        <button id="clear-btn">Clear List</button>
+        <!-- <label for="invert">Invert:</label>
+        <input type="checkbox" name="invert" id="invert-input" /> -->
+      </section>
+      <section id="book-list"></section>
+    </section>
+  </body>
+</html>
