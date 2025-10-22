@@ -15,16 +15,6 @@ Array.from(genreInput.children).forEach((genre) => genres.push(genre.value));
 
 const books = [];
 
-/* Example: only one that presists on load so comment out of unwanted */
-const exampleBook = {
-  name: "Example Book",
-  author: "anders0825",
-  genre: "action",
-  score: "5",
-  time: Date.now(),
-};
-books.push(exampleBook);
-
 loadBooks();
 renderBooks();
 
