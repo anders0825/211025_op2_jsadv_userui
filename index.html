@@ -58,9 +58,13 @@
               <p>Genre:</p>
               <select name="genre-input" id="genre-input" class="input-field">
                 <option value="other" selected>Other</option>
-                <option value="action">Action</option>
-                <option value="fantasy">Fantasy</option>
                 <option value="romance">Romance</option>
+                <option value="mystery">Mystery</option>
+                <option value="fantasy">Fantasy</option>
+                <option value="sci-fi">Sci-Fi</option>
+                <option value="horror">Horror</option>
+                <option value="biography">Biography</option>
+                <option value="self-help">Self-Help</option>
               </select>
             </section>
           </div>
@@ -71,17 +75,35 @@
     <section id="register-cont">
       <h2>My Books:</h2>
       <section id="menu-cont">
-        <label for="sort-input">Sort by:</label>
-        <select name="sort-input" id="sort-input" class="select-cont">
-          <option value="time-desc" selected>Oldest</option>
-          <option value="time-asc">Latest</option>
-          <option value="score">Score</option>
-        </select>
-        <button id="clear-btn">Clear List</button>
-        <!-- <label for="invert">Invert:</label>
-        <input type="checkbox" name="invert" id="invert-input" /> -->
+        <label for="filter-select" class="menu-label"
+          >Filter:
+          <select name="filter-select" id="filter-select" class="select-cont">
+            <option value="none" selected>None</option>
+            <option value="romance">Romance</option>
+            <option value="mystery">Mystery</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="sci-fi">Sci-Fi</option>
+            <option value="horror">Horror</option>
+            <option value="biography">Biography</option>
+            <option value="self-help">Self-Help</option>
+          </select>
+        </label>
+        <label for="sort-select" class="menu-label"
+          >Sort:
+          <select name="sort-select" id="sort-select" class="select-cont">
+            <option value="time" selected>Latest</option>
+            <option value="score">Score</option>
+            <option value="name">Name</option>
+          </select>
+          <label for="invert-input" id="invert-cont">
+            <input type="checkbox" name="invert-input" id="invert-input" />
+            <span id="checkmark-content"></span>
+            Invert
+          </label>
+        </label>
       </section>
       <section id="book-list"></section>
+      <button id="clear-btn">Clear List</button>
     </section>
   </body>
 </html>

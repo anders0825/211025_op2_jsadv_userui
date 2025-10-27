@@ -7,25 +7,31 @@ const genreInput = document.getElementById("genre-input");
 const scoreInput = document.getElementById("score-input");
 const subimtBtn = document.getElementById("submit-input");
 
-const sortInput = document.getElementById("sort-input");
+const filterSelect = document.getElementById("filter-select");
+const sortSelect = document.getElementById("sort-select");
+const invertInput = document.getElementById("invert-input");
+
 const clearBtn = document.getElementById("clear-btn");
 
 const genres = [];
 Array.from(genreInput.children).forEach((genre) => genres.push(genre.value));
 
 const books = [];
+let currentBooks = [];
 
 loadBooks();
-renderBooks();
+currentBooks = [...books]; // !make unique!
+renderBooks(currentBooks);
 
 document.addEventListener("DOMContentLoaded", () => {
-  sortInput.value = "time-desc";
+  sortSelect.value = "time";
+  filterSelect.value = "none";
   genreInput.value = "other";
-  books.sort((t1, t2) => t1.time - t2.time);
-  renderBooks();
+  sortBooks();
 });
 
 bookForm.addEventListener("submit", (e) => {
+  e.preventDefault();
   addBook({
     name: nameInput.value,
     author: authorInput.value,
@@ -36,36 +42,54 @@ bookForm.addEventListener("submit", (e) => {
   authorInput.value = "";
   genreInput.value = "other";
   scoreInput.value = "";
-
-  renderBooks();
+  currentBooks = [...books];
+  sortBooks();
+  renderBooks(currentBooks);
 });
 
 clearBtn.addEventListener("click", () => {
   books.length = 0;
+  currentBooks.length = 0;
   localStorage.clear();
-  renderBooks();
+  renderBooks(currentBooks);
 });
 
-sortInput.addEventListener("change", (e) => {
-  const option = e.target.value;
+filterSelect.addEventListener("change", filterBooks);
+invertInput.addEventListener("change", sortBooks);
+sortSelect.addEventListener("change", sortBooks);
+
+function filterBooks() {
+  const selected = filterSelect.value;
+  if (selected === "none") {
+    currentBooks = [...books];
+  } else {
+    currentBooks = books.filter((book) => book.genre === selected);
+  }
+  sortBooks();
+}
+
+function sortBooks() {
+  const option = sortSelect.value;
+  const inverted = invertInput.checked;
 
   if (option === "score") {
-    books.sort((t1, t2) => t2.score - t1.score);
+    currentBooks.sort((a, b) =>
+      inverted ? a.score - b.score : b.score - a.score
+    );
+  } else if (option === "time") {
+    currentBooks.sort((a, b) => (inverted ? a.time - b.time : b.time - a.time));
+  } else if (option === "name") {
+    currentBooks.sort((a, b) =>
+      inverted ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name)
+    );
   }
 
-  if (option === "time-desc") {
-    books.sort((t1, t2) => t1.time - t2.time);
-  } else if (option === "time-asc") {
-    books.sort((t1, t2) => t2.time - t1.time);
-  }
+  renderBooks(currentBooks);
+}
 
-  renderBooks();
-});
-
-function renderBooks() {
+function renderBooks(arr) {
   bookList.replaceChildren();
-
-  for (const book of books) {
+  for (const book of arr) {
     try {
       bookList.append(createBookItem(book));
     } catch (err) {
@@ -88,15 +112,7 @@ function loadBooks() {
 
 function addBook({ name, author, genre, score }) {
   if (!name || name.length <= 1) return;
-
-  const newBook = {
-    name,
-    author,
-    genre,
-    score,
-    time: Date.now(), // use this as unique identifier
-  };
-
+  const newBook = { name, author, genre, score, time: Date.now() };
   books.push(newBook);
   saveBooks();
 }
@@ -108,7 +124,6 @@ function createBookItem(book) {
   const textCont = document.createElement("div");
   textCont.classList.add("text-cont");
 
-  // Score input
   const itemScore = document.createElement("input");
   itemScore.classList.add("book-score");
   itemScore.type = "number";
@@ -117,19 +132,16 @@ function createBookItem(book) {
   itemScore.min = "0";
   itemScore.max = "10";
 
-  // Name input
   const itemName = document.createElement("input");
   itemName.classList.add("book-name");
   itemName.type = "text";
   itemName.value = book.name;
 
-  // Author input
   const itemAuthor = document.createElement("input");
   itemAuthor.classList.add("book-author");
   itemAuthor.type = "text";
   itemAuthor.value = book.author;
 
-  // Genre select
   const itemGenre = document.createElement("select");
   itemGenre.classList.add("book-genre");
 
@@ -141,7 +153,6 @@ function createBookItem(book) {
   }
   itemGenre.value = book.genre;
 
-  // Auto-save
   itemName.addEventListener("input", () => {
     book.name = itemName.value;
     saveBooks();
@@ -168,7 +179,6 @@ function createBookItem(book) {
     saveBooks();
   });
 
-  // Delete button
   const deleteBtn = document.createElement("button");
   deleteBtn.classList.add("book-delete");
   deleteBtn.textContent = "X";
@@ -177,7 +187,8 @@ function createBookItem(book) {
     if (idx !== -1) {
       books.splice(idx, 1);
       saveBooks();
-      renderBooks();
+      currentBooks = [...books];
+      sortBooks();
     }
   });
 
