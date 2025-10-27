@@ -279,15 +279,18 @@ input[type="number"] {
 }
 
 #clear-btn {
-  padding: 0 5px;
+  padding: 5px;
 
-  border: 1px solid var(--accent-main);
+  width: 80svw;
+  max-width: 500px;
+
+  border: 2px solid var(--accent-main);
   border-radius: 5px;
 
   background-color: var(--bg-alt);
   color: var(--text-main);
 
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: monospace;
   font-size: 1rem;
 }
 

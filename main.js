@@ -48,10 +48,17 @@ bookForm.addEventListener("submit", (e) => {
 });
 
 clearBtn.addEventListener("click", () => {
-  books.length = 0;
-  currentBooks.length = 0;
-  localStorage.clear();
-  renderBooks(currentBooks);
+  const confirmClear = window.confirm(
+    "Are you sure you want to delete the entire list?"
+  );
+  if (!confirmClear) {
+    return;
+  } else {
+    books.length = 0;
+    currentBooks.length = 0;
+    localStorage.removeItem("books");
+    renderBooks(currentBooks);
+  }
 });
 
 filterSelect.addEventListener("change", filterBooks);
